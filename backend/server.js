@@ -3,17 +3,22 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv").config();
 const cors = require("cors");
 const mongoose = require("mongoose");
+const userRoute = require('./routes/userRoutes')
 
-const app = express();
-app.use(bodyParser.urlencoded({ extended: false }));
 
 const PORT = process.env.PORT || 5000;
-// parse application/json
+const app = express();
+
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+
 
 app.get("/", (req, res) => {
   res.send("home");
 });
+app.use('/api/users', userRoute);
+
 
 mongoose
   .connect(process.env.MONGO_URI)
