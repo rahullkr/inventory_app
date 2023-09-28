@@ -6,46 +6,55 @@
 //     res.send('register user');
 // }
 
-const asyncHandler = require('express-async-handler');
-const User = require('../models/userModel');
-const { Error } = require('mongoose');
+const asyncHandler = require("express-async-handler");
+const User = require("../models/userModel");
+const { Error } = require("mongoose");
 
-const registerUser  = asyncHandler(async(req,res) =>{
-    const {name, email, password} = req.body;
+const bcrypt = require("bcryptjs");
 
-    //validation part karna hoga and for that
-    if(!name || !email ||!password){
-        res.status(400);
-        throw new Error('please fill all the details');
-    }
-    if(password.length< 8){
-        res.status(400);
-        throw new Error('password must be of 8 characters');
-    }
+const registerUser = asyncHandler(async (req, res) => {
+  const { name, email, password } = req.body;
 
-    // check if email already exist
+  //validation part karna hoga and for that
+  if (!name || !email || !password) {
+    res.status(400);
+    throw new Error("please fill all the details");
+  }
+  if (password.length < 8) {
+    res.status(400);
+    throw new Error("password must be of 8 characters");
+  }
 
-    const userExist = await User.findOne({email});
-    if(userExist){
-        res.status(400);
-        throw new Error('email already exists');
-    }
-    const user = await User.create({
-        name, email, password
-    })
-    if(user){
-        const {_id, name, email, photo, phone, bio} = user;
-        res.status(201).json({
-            _id, name, email, photo, phone, bio
-        })
-    }else{
-        res.status(400)
-        throw new Error('invalid user data')
-    }
+  // check if email already exist
 
+  const userExist = await User.findOne({ email });
+  if (userExist) {
+    res.status(400);
+    throw new Error("email already exists");
+  }
+
+  // encryption, user creation ke pehle hoga
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+  const user = await User.create({
+    name,
+    email,
+    password: hashedPassword,
+  });
+  if (user) {
+    const { _id, name, email, photo, phone, bio } = user;
+    res.status(201).json({
+      _id,
+      name,
+      email,
+      photo,
+      phone,
+      bio,
+    });
+  } else {
+    res.status(400);
+    throw new Error("invalid user data");
+  }
 });
-
-
-
 
 module.exports = registerUser;
