@@ -9,7 +9,10 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
 const { Error } = require("mongoose");
-
+const jwt = require('jsonwebtoken')
+const generateToken = (id) => {
+    return jwt.sign({id}, process.env.JWT_SECRETS, {expiresIn: '1d'})
+}
 
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -33,14 +36,31 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error("email already exists");
   }
 
-  // encryption, user creation ke pehle hoga
+
 
   const user = await User.create({
     name,
     email,
     password
   });
-  if (user) {
+
+    // generate token
+    const token = generateToken(user._id)
+
+    res.cookie('token', token, {
+        path: '/',
+        httpOnly: true,
+        expires: new Date(Date.now() + 1000*86400),
+        sameSite: "none",
+        secure: true
+    })
+
+
+
+
+
+
+     if (user) {
     const { _id, name, email, photo, phone, bio } = user;
     res.status(201).json({
       _id,
@@ -49,6 +69,7 @@ const registerUser = asyncHandler(async (req, res) => {
       photo,
       phone,
       bio,
+      token,
     });
   } else {
     res.status(400);
