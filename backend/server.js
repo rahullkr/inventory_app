@@ -5,7 +5,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const userRoute = require("./routes/userRoutes");
 const errorHandler = require("./middlewares/userMiddlewares");
-const cookieParser = require('cookie-parser')
+const cookieParser = require("cookie-parser");
 
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -16,14 +16,14 @@ app.use(bodyParser.json());
 app.get("/", (req, res) => {
   res.send("home");
 });
-app.use("/api/users", userRoute);
+
 app.use(errorHandler);
 app.use(cookieParser());
-
+app.use("/api/users", userRoute);
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
-    app.listen(PORT, () => {
+    app.listen(PORT, async () => {
       console.log(`server running on port ${PORT} `);
     });
   })

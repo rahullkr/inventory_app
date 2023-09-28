@@ -85,8 +85,10 @@ const loginUser = asyncHandler(async (req, res) => {
   if (!user) {
     res.status(400);
     throw new Error("user not found, sign up right now");
- 
   }
+
+
+  const passwordIsCorrect = await bcrypt.compare(password, user.password);
   const token = generateToken(user._id);
 
   res.cookie("token", token, {
@@ -96,8 +98,6 @@ const loginUser = asyncHandler(async (req, res) => {
     sameSite: "none",
     secure: true,
   });
-
-  const passwordIsCorrect = await bcrypt.compare(password, user.password);
   if (user && passwordIsCorrect) {
     const { _id, name, email, photo, phone, bio } = user;
     res.status(200).json({
@@ -109,21 +109,18 @@ const loginUser = asyncHandler(async (req, res) => {
       bio,
       token,
     });
-  }
-  else{
+  } else {
     res.status(400);
     throw new Error("invalid email or password");
   }
-  
 });
-
 
 // logout user
 
-const logout = asyncHandler(async (req,res) =>{
+const logout = asyncHandler(async (req, res) => {
   //there are two ways to logout, one is to delete the cookie and other one is to expire the cookie
- //here we are expiring the cookie
- res.cookie("token", "", {
+  //here we are expiring the cookie
+  res.cookie("token", "", {
     path: "/",
     httpOnly: true,
     expires: new Date(0),
@@ -131,10 +128,30 @@ const logout = asyncHandler(async (req,res) =>{
     secure: true,
   });
   res.status(200).json({
-    message: 'successfully logged out'  
-  })
+    message: "successfully logged out",
+  });
+});
+//getting the user info
+const getUser = asyncHandler(async (req, res) => {
 
-  
-})
+  const user = await User.findById(req.user._id);
+  console.log(user);
 
-module.exports = { registerUser, loginUser, logout };
+  if (user) {
+    const { _id, name, email, photo, phone, bio } = user;
+    res.status(200).json({
+      _id,
+      name,
+      email,
+      photo,
+      phone,
+      bio,
+      
+    });
+  } else {
+    res.status(400);
+    throw new Error("user not found");
+  }
+});
+
+module.exports = { registerUser, loginUser, logout, getUser };
