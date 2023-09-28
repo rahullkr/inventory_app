@@ -6,13 +6,13 @@ const protect = asyncHandler(async (req, res, next) => {
   try {
 
     const token = req.cookies.token;    
-    console.log(token);  
+ 
     if (!token) {
       res.status(401);
       throw new Error("not authrized, login");
     }
     const verified = jwt.verify(token, process.env.JWT_SECRETS);
-    console.log(verified)
+
   
     const user = await User.findById(verified.id).select("-password");
     if (!user) {

@@ -87,7 +87,6 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new Error("user not found, sign up right now");
   }
 
-
   const passwordIsCorrect = await bcrypt.compare(password, user.password);
   const token = generateToken(user._id);
 
@@ -133,7 +132,6 @@ const logout = asyncHandler(async (req, res) => {
 });
 //getting the user info
 const getUser = asyncHandler(async (req, res) => {
-
   const user = await User.findById(req.user._id);
   console.log(user);
 
@@ -146,7 +144,6 @@ const getUser = asyncHandler(async (req, res) => {
       photo,
       phone,
       bio,
-      
     });
   } else {
     res.status(400);
@@ -154,4 +151,52 @@ const getUser = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { registerUser, loginUser, logout, getUser };
+// getting the login status
+const loginStatus = asyncHandler(async (req, res) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.json(false);
+  }
+  const verified = jwt.verify(token, process.env.JWT_SECRETS);
+  if (verified) {
+    return res.json(true);
+  }
+  return res.json(false);
+});
+
+//updating the user
+const updateUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  // console.log(user);
+  if (user) {
+    const { name, email, photo, phone, bio } = user;
+    user.email = email;
+    user.name = req.body.name || name;
+    user.phone = req.body.phone || phone;
+    user.bio = req.body.bio || bio;
+    user.photo = req.body.photo || photo;
+   console.log(req.body.name);
+    const updatedUser = await user.save();
+
+    res.status(200).json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      photo: updatedUser.photo,
+      phone: updatedUser.phone,
+      bio: updatedUser.bio,
+    });
+  } else {
+    res.status(404);
+    throw new Error("user not found");
+  }
+});
+
+module.exports = {
+  registerUser,
+  loginUser,
+  logout,
+  getUser,
+  loginStatus,
+  updateUser,
+};
