@@ -75,6 +75,7 @@ const registerUser = asyncHandler(async (req, res) => {
 // login user
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
+
   if (!email || !password) {
     res.status(400);
     throw new Error("invalid user data");
@@ -175,7 +176,7 @@ const updateUser = asyncHandler(async (req, res) => {
     user.phone = req.body.phone || phone;
     user.bio = req.body.bio || bio;
     user.photo = req.body.photo || photo;
-   console.log(req.body.name);
+    console.log(req.body.name);
     const updatedUser = await user.save();
 
     res.status(200).json({
@@ -192,6 +193,28 @@ const updateUser = asyncHandler(async (req, res) => {
   }
 });
 
+const changePassword = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  const { oldPassword, password } = req.body;
+  if (!user) {
+    res.status(400);
+    throw new Error("user not found");
+  }
+  if (!oldPassword || !password) {
+    res.status(400);
+    throw new Error("enter the password correctly");
+  }
+  const passwordIsCorrect = await bcrypt.compare(oldPassword, user.password);
+  if (user && passwordIsCorrect) {
+    user.password = password;
+    await user.save();
+    res.status(200).send("password change successful");
+  } else {
+    res.status(400);
+    throw new Error("old password is incoorect");
+  }
+});
+
 module.exports = {
   registerUser,
   loginUser,
@@ -199,4 +222,5 @@ module.exports = {
   getUser,
   loginStatus,
   updateUser,
+  changePassword,
 };
