@@ -121,7 +121,20 @@ const loginUser = asyncHandler(async (req, res) => {
 // logout user
 
 const logout = asyncHandler(async (req,res) =>{
+  //there are two ways to logout, one is to delete the cookie and other one is to expire the cookie
+ //here we are expiring the cookie
+ res.cookie("token", "", {
+    path: "/",
+    httpOnly: true,
+    expires: new Date(0),
+    sameSite: "none",
+    secure: true,
+  });
+  res.status(200).json({
+    message: 'successfully logged out'  
+  })
 
+  
 })
 
 module.exports = { registerUser, loginUser, logout };
