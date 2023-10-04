@@ -7,19 +7,18 @@ const userRoute = require("./routes/userRoutes");
 const productRoute = require("./routes/productRoute");
 const errorHandler = require("./middlewares/userMiddlewares");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 
 const PORT = process.env.PORT || 5000;
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-app.get("/", (req, res) => {
-  res.send("home");
-});
-
 app.use(errorHandler);
 app.use(cookieParser());
+app.use(cors());
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 app.use("/api/users", userRoute);
 app.use("/api/products", productRoute);
 mongoose
