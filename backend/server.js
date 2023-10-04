@@ -4,6 +4,7 @@ const dotenv = require("dotenv").config();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const userRoute = require("./routes/userRoutes");
+const productRoute = require("./routes/productRoute");
 const errorHandler = require("./middlewares/userMiddlewares");
 const cookieParser = require("cookie-parser");
 
@@ -20,6 +21,7 @@ app.get("/", (req, res) => {
 app.use(errorHandler);
 app.use(cookieParser());
 app.use("/api/users", userRoute);
+app.use("/api/products", productRoute);
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {

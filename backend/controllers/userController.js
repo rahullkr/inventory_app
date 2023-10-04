@@ -15,7 +15,6 @@ const Token = require("../models/tokenModel");
 const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
 
- 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRETS, { expiresIn: "1d" });
 };
@@ -138,7 +137,7 @@ const logout = asyncHandler(async (req, res) => {
 //getting the user info
 const getUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
-  console.log(user);
+
 
   if (user) {
     const { _id, name, email, photo, phone, bio } = user;
@@ -180,7 +179,7 @@ const updateUser = asyncHandler(async (req, res) => {
     user.phone = req.body.phone || phone;
     user.bio = req.body.bio || bio;
     user.photo = req.body.photo || photo;
-    console.log(req.body.name);
+
     const updatedUser = await user.save();
 
     res.status(200).json({
@@ -230,8 +229,12 @@ const forgotPassword = asyncHandler(async (req, res) => {
     throw new Error("user does not exists");
   }
 
+  let token = await Token.findOne({ userId: user._id });
+  if (token) {
+    await Token.deleteOne();
+  }
   let resetToken = crypto.randomBytes(32).toString("hex") + user._id;
-  // console.log((resetToken));
+  console.log((resetToken));
   const hashedToken = crypto
     .createHash("sha256")
     .update(resetToken)
@@ -245,14 +248,15 @@ const forgotPassword = asyncHandler(async (req, res) => {
   }).save();
 
   const resetUrl = `${process.env.FRONTEND_URL}/resetpassword/${resetToken}`;
-  console.log(resetUrl);
+
 
   const message = `<h2> Hello ${user.name}</h2>
    <p>Use the url below to reset your password</p>
    <p>the given link is valid for only 30 minutes.</p>
    <a href = ${resetUrl} clicktracking = off>${resetUrl}</a>`;
 
-  const subject = "password reset request";
+
+  const subject = "forgot password link";
   const send_to = user.email;
   const sent_from = process.env.EMAIL_USER;
   try {
@@ -269,6 +273,28 @@ const forgotPassword = asyncHandler(async (req, res) => {
   res.send("forgot password");
 });
 
+const resetPassword = asyncHandler(async (req, res) => {
+  const { password } = req.body;
+  const { resetToken } = req.params;
+  const hashedToken = crypto.createHash("sha256").update(resetToken).digest('hex');
+
+  const userToken = await Token.findOne({
+    token: hashedToken,
+    expiresAt: {$gt: Date.now()}
+  })
+  if(!userToken){
+    res.status();
+    throw new Error('invalid or expired token');
+  }
+
+  const user = await User.findOne({_id: userToken.userId})
+  user.password = password;
+  await user.save();
+  res.status(200).json({
+    message: "password reset successful, please login"
+  })
+});
+
 module.exports = {
   registerUser,
   loginUser,
@@ -278,4 +304,5 @@ module.exports = {
   updateUser,
   changePassword,
   forgotPassword,
+  resetPassword,
 };
