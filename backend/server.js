@@ -5,6 +5,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const userRoute = require("./routes/userRoutes");
 const productRoute = require("./routes/productRoute");
+const contactRoute = require("./routes/contactRoute");
 const errorHandler = require("./middlewares/userMiddlewares");
 const cookieParser = require("cookie-parser");
 const path = require("path");
@@ -21,6 +22,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/api/users", userRoute);
 app.use("/api/products", productRoute);
+app.use("/api/contactus", contactRoute);
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
