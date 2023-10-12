@@ -43,7 +43,7 @@ Access the app in your browser at http://localhost:3000.
 Clone this repository to your local machine:
 
 ```bash
- git clone https://github.com/rahullkr/inventory-management-app.git
+ git clone https://github.com/rahullkr/inventory-app.git
 
 ```
 
