@@ -16,6 +16,7 @@ const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
 
 const generateToken = (id) => {
+  //1. what do you want to create the token with, 2. the tool with the help of which it will create the token, 3. expiring time
   return jwt.sign({ id }, process.env.JWT_SECRETS, { expiresIn: "1d" });
 };
 // register user
@@ -218,7 +219,7 @@ const changePassword = asyncHandler(async (req, res) => {
 });
 
 //forgot password
-const forgotPassword = asyncHandler(async (req, res) => {
+const   forgotPassword = asyncHandler(async (req, res) => {
   // res.send('forgot passwoed')
   const { email } = req.body;
   const user = await User.findOne({ email });

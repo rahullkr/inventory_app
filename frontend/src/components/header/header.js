@@ -20,9 +20,9 @@ const Header = () => {
       <div className="--flex-between">
         <h3>
           <span className="--fw-thin">Welcome, </span>
-          <span className="--color-danger">{name}</span>
+          <span className="--color-primary">{name}</span>
         </h3>
-        <button onClick={logout} className="--btn --btn-danger">
+        <button onClick={logout} className="--btn">
           Logout
         </button>
       </div>

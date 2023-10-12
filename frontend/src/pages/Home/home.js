@@ -1,5 +1,5 @@
 import React from "react";
-import { RiProductHuntLine } from "react-icons/ri";
+import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 import { Link } from "react-router-dom";
 import "./Home.scss";
 import heroImg from "../../assets/inv-img.png";
@@ -10,7 +10,7 @@ const Home = () => {
     <div className="home">
       <nav className="container --flex-between ">
         <div className="logo">
-          <RiProductHuntLine size={35} />
+          <MdOutlineProductionQuantityLimits size={35} />
         </div>
 
         <ul className="home-links">
@@ -38,10 +38,9 @@ const Home = () => {
       {/* HERO SECTION */}
       <section className="container hero">
         <div className="hero-text">
-          <h2>Inventory {"&"} Stock Management Solution</h2>
+          <h2>Inventory {"&"} Management Site</h2>
           <p>
-            Inventory system to control and manage proucts in the warehouse in
-            real timeand integrated to make it easier to develop your business.
+           A real-time integrated inventory system efficiently manages warehouse products, offering real-time tracking and seamless integration with business processes, facilitating business growth and development.
           </p>
           <div className="hero-buttons">
             <button className="--btn --btn-secondary">

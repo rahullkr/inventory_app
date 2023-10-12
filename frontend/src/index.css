@@ -1,10 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
-
+@import url('https://fonts.googleapis.com/css2?family=Young+Serif&display=swap');
 :root {
   --nav-width: 68px;
   --header-height: 45px;
 
-  --font-family: "Poppins", sans-serif;
+  --font-family: 'Young Serif', serif;
   --dark-blue: #0a1930;
   --light-blue: #1f93ff;
 
@@ -35,7 +34,7 @@ html {
 
 body {
   font-family: var(--font-family);
-  background: #eee;
+  background: #fff;
 }
 
 section {
@@ -47,6 +46,7 @@ section {
   max-width: 1000px;
   margin: 0 auto;
   padding: 0 20px;
+
 }
 
 .--pad {

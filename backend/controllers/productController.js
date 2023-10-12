@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const Product = require("../models/productModel");
 const { fileSizeFormatter } = require("../utils/fileUpload");
 const cloudinary = require("cloudinary").v2;
+
 const createProduct = asyncHandler(async (req, res) => {
   const { name, sku, category, quantity, price, description } = req.body;
 
@@ -74,8 +75,9 @@ const deleteProduct = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error("user not authrorized");
   }
-  await Product.remove();
-  res.status(200).json({ message: "product deleted" });
+  await Product.deleteOne({ _id: req.params.id });
+
+  res.status(200).json({ message: "Product deleted" });
 });
 
 const updateProduct = asyncHandler(async (req, res) => {
@@ -124,7 +126,7 @@ const updateProduct = asyncHandler(async (req, res) => {
       quantity,
       price,
       description,
-      image: Object.keys(fileData).length===0 ? product.image: fileData
+      image: Object.keys(fileData).length === 0 ? product.image : fileData,
     },
     {
       new: true,

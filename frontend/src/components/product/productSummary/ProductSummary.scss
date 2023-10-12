@@ -1,27 +1,50 @@
 .product-summary {
-    width: 100%;
-    .info-summary {
-      display: flex;
-      flex-wrap: wrap;
-    }
+  width: 100%;
+
+  .info-summary {
+    display: flex;
+    flex-wrap: wrap;
   }
+}
+
+.card {
+  border: 10px solid #ccc;
+  padding: 5px;
+  background-color: #f5f6fa;
+}
+
+.card1 {
+  background-color: #b624ff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  font-size: 18px;
+
   
-  .card {
-    border: 1px solid #ccc;
-    // border-bottom: 3px solid var(--light-blue);
-    padding: 5px;
-    background-color: #f5f6fa;
-  }
-  
-  .card1 {
-    background-color: #b624ff;
-  }
-  .card2 {
-    background-color: #32963d;
-  }
-  .card3 {
-    background-color: #c41849;
-  }
-  .card4 {
-    background-color: #03a5fc;
-  }
+}
+.card2 {
+  background-color: #32963d;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  font-size: 18px;
+}
+.card3 {
+  background-color: #c41849;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  font-size: 18px;
+}
+.card4 {
+  background-color: #03a5fc;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  font-size: 18px;
+}
+
+.card1, .card2, .card3, .card4:hover {
+  transform: scale(1.05); /* Enlarge the card on hover */
+  transition: transform 0.3s ease;
+}

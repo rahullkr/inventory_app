@@ -1,27 +1,40 @@
 .contact {
   .card {
-    padding: 1rem;
-    border: 1px solid #ccc;
+    padding: 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    transition: all 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   }
 
   .card2 {
-    padding: 2rem;
-    background-color: var(--light-blue);
+    padding: 2.5rem;
+    background: linear-gradient(to right, #007bff, #00bfff);
     color: #fff;
-    h3,
-    p {
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+
+    h3, p {
       color: #fff;
+      margin-bottom: 1rem;
     }
+
     .icons {
-      margin: 3rem 0;
+      margin: 2rem 0;
       span {
         display: flex;
-        justify-content: flex-start;
         align-items: center;
         margin-bottom: 1rem;
-        a,
-        p {
-          margin-left: 5px;
+        a, p {
+          margin-left: 10px;
+          color: #fff;
+          text-decoration: none;
         }
       }
     }
@@ -32,14 +45,16 @@
     align-items: flex-start;
 
     form {
-      width: 500px;
-      max-width: 100%;
+      width: 100%;
+      max-width: 500px;
       margin-right: 1rem;
       margin-bottom: 1rem;
       label {
         display: block;
-        font-size: 1.4rem;
-        font-weight: 500;
+        font-size: 1.6rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #333;
       }
       input[type="text"],
       input[type="number"],
@@ -52,11 +67,14 @@
         font-size: 1.6rem;
         font-weight: 300;
         padding: 1rem;
-        margin: 1rem auto;
+        margin: 0.5rem 0;
         width: 100%;
-        border: 1px solid #777;
-        border-radius: 3px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
         outline: none;
+      }
+      textarea {
+        height: 150px;
       }
     }
   }

@@ -37,7 +37,6 @@ const ProductList = ({ products, isLoading }) => {
     await dispatch(deleteProduct(id));
     await dispatch(getProducts());
   };
-
   const confirmDelete = (id) => {
     confirmAlert({
       title: "Delete Product",
@@ -53,7 +52,7 @@ const ProductList = ({ products, isLoading }) => {
         },
       ],
     });
-  };
+  };	
 
   //   Begin Pagination
   const [currentItems, setCurrentItems] = useState([]);
@@ -103,7 +102,7 @@ const ProductList = ({ products, isLoading }) => {
             <table>
               <thead>
                 <tr>
-                  <th>s/n</th>
+                  <th>S/N</th>
                   <th>Name</th>
                   <th>Category</th>
                   <th>Price</th>
