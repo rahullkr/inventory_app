@@ -88,7 +88,7 @@ const Login = () => {
           <Link to="/forgot">Forgot Password</Link>
 
           <span className={styles.register}>
-            <Link to="/">Home</Link>
+            <Link to="/">Home | </Link>
             <p> &nbsp; Don't have an account? &nbsp;</p>
             <Link to="/register">Register</Link>
           </span>
